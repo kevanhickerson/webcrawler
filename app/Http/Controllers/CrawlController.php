@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use DOMDocument;
+use App\Page\Page;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -13,24 +14,19 @@ class CrawlController extends Controller
     }
 
     public function results(Request $request): View {
-        $page = $request->input('page');
+        $pageUrl = $request->input('page');
 
-        $pageData = $this->getPage($page);
+        $pageData = new Page();
+        $pageData->fetch($pageUrl);
+
+        $averageLoadTime = $pageData->getLoadTime() / 1;
 
         return view('results', [
-            'numberOfLinks' => $pageData->getElementsByTagName('a')->count(),
-            'numberOfPictures' => $pageData->getElementsByTagName('img')->count(),
-            'page' => $page,
+            'averageLoadTime' => $averageLoadTime,
+            'numberOfLinks' => $pageData->getDocument()->getElementsByTagName('a')->count(),
+            'numberOfPictures' => $pageData->getDocument()->getElementsByTagName('img')->count(),
+            'page' => $pageData->getUrl(),
+            'pageStatus' => $pageData->getStatusCode(),
         ]);
-    }
-
-    private function getPage(string $url): DOMDocument {
-        $data = file_get_contents($url);
-//        print_r($data);die();
-
-        $doc = new DOMDocument();
-        $doc->loadHtml($data, LIBXML_NOERROR);
-
-        return $doc;
     }
 }
