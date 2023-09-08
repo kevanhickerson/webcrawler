@@ -29,7 +29,7 @@ class CrawlController extends Controller
         // Crawl some of the internal urls that we've found on the first page
         for ($i = 0; $i < count($linksToCrawl); $i++) {
             // Stop after a maximum of 6 pages have been crawled
-            if (count($pages) > 6) {
+            if (count($pages) >= 6) {
                 break;
             }
 

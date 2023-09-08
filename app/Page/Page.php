@@ -12,7 +12,9 @@ class Page {
     private string $title;
     private array $uniqueExternalLinks;
     private array $uniqueInternalLinks;
+    private array $uniqueImages;
     private string $url;
+    private int $wordCount;
 
     public function __construct(DOMDocument $domDocument = new DOMDocument()) {
         $this->document = $domDocument;
@@ -92,7 +94,15 @@ class Page {
         return $this->uniqueInternalLinks;
     }
 
+    public function getUniqueImages(): array {
+        return $this->uniqueImages;
+    }
+
     public function getUrl(): string {
         return $this->url;
+    }
+
+    public function getWordCount(): int {
+        return $this->wordCount;
     }
 }
