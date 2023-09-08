@@ -6,9 +6,10 @@ use DOMDocument;
 
 class Page {
     private DOMDocument $document;
-    private string $url;
-    private string $statusCode;
     private int $loadTime;
+    private array $links;
+    private string $statusCode;
+    private string $url;
 
     public function __construct(DOMDocument $domDocument = new DOMDocument()) {
         $this->document = $domDocument;
@@ -28,6 +29,15 @@ class Page {
         $this->statusCode = $statusCode;
         $this->url = $url;
 
+        $links = $this->document->getElementsByTagName('a');
+
+        foreach($links as $link) {
+            $linkValue = $link?->attributes?->getNamedItem('href')?->nodeValue;
+            if ($linkValue) {
+                $this->links[] = $linkValue;
+            }
+        }
+
         return true;
     }
 
@@ -35,15 +45,19 @@ class Page {
         return $this->document;
     }
 
-    public function getUrl(): string {
-        return $this->url;
+    public function getLoadTime(): int {
+        return $this->loadTime;
+    }
+
+    public function getLinks(): array {
+        return $this->links;
     }
 
     public function getStatusCode(): string {
         return $this->statusCode;
     }
 
-    public function getLoadTime(): int {
-        return $this->loadTime;
+    public function getUrl(): string {
+        return $this->url;
     }
 }

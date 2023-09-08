@@ -23,7 +23,8 @@ class CrawlController extends Controller
 
         return view('results', [
             'averageLoadTime' => $averageLoadTime,
-            'numberOfLinks' => $pageData->getDocument()->getElementsByTagName('a')->count(),
+            'links' => implode(', ', $pageData->getLinks()),
+            'numberOfLinks' => count($pageData->getLinks()),
             'numberOfPictures' => $pageData->getDocument()->getElementsByTagName('img')->count(),
             'page' => $pageData->getUrl(),
             'pageStatus' => $pageData->getStatusCode(),

@@ -27,5 +27,7 @@
                 <td>{{ $pageStatus }}</td>
             </tr>
         </table>
+        <br>
+        {{ $links }}
     </body>
 </html>
