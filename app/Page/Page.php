@@ -4,6 +4,7 @@ namespace App\Page;
 
 use DOMDocument;
 use DOMXPath;
+use Illuminate\Support\Facades\Http;
 
 class Page {
     private DOMDocument $document;
@@ -29,17 +30,18 @@ class Page {
     }
 
     public function fetch(string $url): bool {
-        $data = file_get_contents($url);
-        $statusCode = $http_response_header[0];
-
         $startTime = microtime(true);
+        $response = Http::get($url);
+        $this->loadTime = microtime(true) - $startTime;
+
+        $data = $response->body();
+        $statusCode = $response->status();
 
         // The LIBXML_NOERROR flag is so that this doesn't throw errors on valid HTML5 elements
         if (!$this->document->loadHtml($data, LIBXML_NOERROR | LIBXML_NOBLANKS)) {
             return false;
         }
 
-        $this->loadTime = microtime(true) - $startTime;
         $this->statusCode = $statusCode;
         $this->url = $url;
 
