@@ -20,6 +20,7 @@ class Page {
         $this->document = $domDocument;
         $this->uniqueExternalLinks = [];
         $this->uniqueInternalLinks = [];
+        $this->uniqueImages = [];
     }
 
     public function fetch(string $url): bool {
@@ -59,9 +60,19 @@ class Page {
             }
         }
 
+        $images = $this->document->getElementsByTagName('img');
+
+        foreach($images as $image) {
+            $imageValue = $image?->attributes?->getNamedItem('src')?->nodeValue;
+            if ($imageValue) {
+                $this->uniqueImages[$imageValue] ??= count($this->uniqueImages);
+            }
+        }
+
         // Flip the keys and values so that the urls are values
         $this->uniqueInternalLinks = array_flip($this->uniqueInternalLinks);
         $this->uniqueExternalLinks = array_flip($this->uniqueExternalLinks);
+        $this->uniqueImages = array_flip($this->uniqueImages);
 
         return true;
     }

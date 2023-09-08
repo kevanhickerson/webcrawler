@@ -13,7 +13,7 @@
         Average Title Length: {{ $averageTitleLength }}<br>
         Average Word Count: Fill Me In<br>
         Number Of Pages Crawled: {{ count($pagesCrawled) }}<br>
-        Number Of Unique Images: Fill Me In<br>
+        Number Of Unique Images: {{ $numberUniqueImages }}<br>
         Number Of Unique Internal Links: {{ $numberUniqueInternalLinks }}<br>
         Number Of Unique External Links: {{ $numberUniqueExternalLinks }}<br>
         <table>
