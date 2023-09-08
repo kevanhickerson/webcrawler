@@ -7,6 +7,14 @@
         <title>Webcrawler</title>
     </head>
     <body>
-        Crawling {{ $page }}
+        Crawling {{ $page }}<br>
+        Number Of Links: {{ $numberOfLinks }}<br>
+        Number Of Pictures: {{ $numberOfPictures }}<br>
+        <table>
+            <tr>
+                <th>Page</th>
+                <th>Status Code</th>
+            </tr>
+        </table>
     </body>
 </html>
