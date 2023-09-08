@@ -9,7 +9,7 @@
     <body>
         Average Page Load: {{ $averageLoadTime }}s<br>
         Average Title Length: {{ $averageTitleLength }}<br>
-        Average Word Count: Fill Me In<br>
+        Average Word Count: {{ $averageWordCount }}<br>
         Number Of Pages Crawled: {{ count($pagesCrawled) }}<br>
         Number Of Unique Images: {{ $numberUniqueImages }}<br>
         Number Of Unique Internal Links: {{ $numberUniqueInternalLinks }}<br>
