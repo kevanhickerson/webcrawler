@@ -7,8 +7,6 @@
         <title>Webcrawler</title>
     </head>
     <body>
-        Number Of Pictures: {{ $numberOfPictures }}<br><br>
-
         Average Page Load: {{ $averageLoadTime }}s<br>
         Average Title Length: {{ $averageTitleLength }}<br>
         Average Word Count: Fill Me In<br>

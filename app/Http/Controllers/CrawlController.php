@@ -68,8 +68,6 @@ class CrawlController extends Controller
             'numberUniqueExternalLinks' => count($uniqueExternalLink),
             'numberUniqueImages' => count($uniqueImages),
             'pagesCrawled' => $pages,
-
-            'numberOfPictures' => $pages[0]->getDocument()->getElementsByTagName('img')->count(),
         ]);
     }
 
