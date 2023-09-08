@@ -15,8 +15,8 @@
         Average Word Count: Fill Me In<br>
         Number Of Pages Crawled: Fill Me In<br>
         Number Of Unique Images: Fill Me In<br>
-        Number Of Unique Internal Links: Fill Me In<br>
-        Number Of Unique External Links: Fill Me In<br>
+        Number Of Unique Internal Links: {{ $numberUniqueInternalLinks }}<br>
+        Number Of Unique External Links: {{ $numberUniqueExternalLinks }}<br>
         <table>
             <tr>
                 <th>Page</th>

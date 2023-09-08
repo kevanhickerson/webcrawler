@@ -20,11 +20,26 @@ class CrawlController extends Controller
         $pageData->fetch($pageUrl);
 
         $averageLoadTime = $pageData->getLoadTime() / 1;
+        $uniqueInternalLink = [];
+        $uniqueExternalLink = [];
+
+        $links = $pageData->getLinks();
+
+        array_walk($links, function ($link) use (&$uniqueInternalLink, &$uniqueExternalLink) {
+            if (!stristr($link, 'http://') && !stristr($link, 'https://')) {
+                $uniqueInternalLink[$link] ??= count($uniqueInternalLink);
+            } else {
+                $uniqueExternalLink[$link] ??= count($uniqueExternalLink);
+            }
+        });
 
         return view('results', [
             'averageLoadTime' => $averageLoadTime,
-            'links' => implode(', ', $pageData->getLinks()),
-            'numberOfLinks' => count($pageData->getLinks()),
+            'numberUniqueInternalLinks' => count($uniqueInternalLink),
+            'numberUniqueExternalLinks' => count($uniqueExternalLink),
+
+            'links' => implode(', ', $links),
+            'numberOfLinks' => count($links),
             'numberOfPictures' => $pageData->getDocument()->getElementsByTagName('img')->count(),
             'page' => $pageData->getUrl(),
             'pageStatus' => $pageData->getStatusCode(),
