@@ -16,6 +16,10 @@ class CrawlController extends Controller
     public function results(Request $request): View {
         $pageUrl = $request->input('page');
 
+        if (!stristr($pageUrl, 'http://') && !stristr($pageUrl, 'https://')) {
+            $pageUrl = 'http://' . $pageUrl;
+        }
+
         $pageData = new Page();
         $pageData->fetch($pageUrl);
 
