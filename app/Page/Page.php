@@ -26,6 +26,7 @@ class Page {
 
         $startTime = time();
 
+        // The LIBXML_NOERROR flag is so that this doesn't throw errors on valid HTML5 elements
         if (!$this->document->loadHtml($data, LIBXML_NOERROR)) {
             return false;
         }
@@ -55,6 +56,10 @@ class Page {
                 }
             }
         }
+
+        // Flip the keys and values so that the urls are values
+        $this->uniqueInternalLinks = array_flip($this->uniqueInternalLinks);
+        $this->uniqueExternalLinks = array_flip($this->uniqueExternalLinks);
 
         return true;
     }

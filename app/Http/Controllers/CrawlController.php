@@ -24,16 +24,33 @@ class CrawlController extends Controller
 
         $pages[] = $this->fetch($pageUrl);
 
+        $linksToCrawl = $pages[0]->getUniqueInternalLinks();
+//         var_dump($linksToCrawl);die();
+
+        // Crawl some of the internal urls that we've found on the first page
+        for ($i = 0; $i < count($linksToCrawl); $i++) {
+            // Stop after a maximum of 6 pages have been crawled
+            if (count($pages) > 6) {
+                break;
+            }
+
+            $link = $linksToCrawl[$i];
+
+            if ($link === '/') {
+                continue;
+            }
+
+            $pages[] = $this->fetch($domain . $link);
+        }
+
         $averageLoadTime = 0;
         $averageTitleLength = 0;
         $uniqueInternalLink = 0;
         $uniqueExternalLink = 0;
-        $links = [];
 
         foreach($pages as $page) {
             $averageLoadTime += $page->getLoadTime();
             $averageTitleLength += strlen($page->getTitle());
-            $links = array_merge($links, $page->getLinks());
             $uniqueExternalLink += count($page->getUniqueExternalLinks());
             $uniqueInternalLink += count($page->getUniqueInternalLinks());
         }
@@ -46,12 +63,9 @@ class CrawlController extends Controller
             'averageTitleLength' => $averageTitleLength,
             'numberUniqueInternalLinks' => $uniqueInternalLink,
             'numberUniqueExternalLinks' => $uniqueExternalLink,
+            'pagesCrawled' => $pages,
 
-            'links' => implode(', ', $links),
-            'numberOfLinks' => count($links),
             'numberOfPictures' => $pages[0]->getDocument()->getElementsByTagName('img')->count(),
-            'page' => $pages[0]->getUrl(),
-            'pageStatus' => $pages[0]->getStatusCode(),
         ]);
     }
 
@@ -63,6 +77,6 @@ class CrawlController extends Controller
     }
 
     private function getHost(string $url) {
-        return parse_url($url, PHP_URL_HOST);
+        return parse_url($url, PHP_URL_SCHEME) . '://' . parse_url($url, PHP_URL_HOST);
     }
 }

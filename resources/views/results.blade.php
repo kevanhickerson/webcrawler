@@ -7,7 +7,6 @@
         <title>Webcrawler</title>
     </head>
     <body>
-        Number Of Links: {{ $numberOfLinks }}<br>
         Number Of Pictures: {{ $numberOfPictures }}<br><br>
 
         Average Page Load: {{ $averageLoadTime }}s<br>
@@ -22,12 +21,12 @@
                 <th>Page</th>
                 <th>Status Code</th>
             </tr>
-            <tr>
-                <td>{{ $page }}</td>
-                <td>{{ $pageStatus }}</td>
-            </tr>
+            @foreach($pagesCrawled as $page)
+                <tr>
+                    <td>{{ $page->getUrl() }}</td>
+                    <td>{{ $page->getStatusCode() }}</td>
+                </tr>
+            @endforeach
         </table>
-        <br>
-        {{ $links }}
     </body>
 </html>
