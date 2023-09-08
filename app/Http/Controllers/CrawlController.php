@@ -20,30 +20,28 @@ class CrawlController extends Controller
             $pageUrl = 'http://' . $pageUrl;
         }
 
+        $domain = $this->getHost($pageUrl);
+
         $pages = $this->fetch($pageUrl);
 
-        $averageLoadTime = $pages[0]->getLoadTime() / 1;
-        $uniqueInternalLink = [];
-        $uniqueExternalLink = [];
+        $averageLoadTime = $pages[0]->getLoadTime() / count($pages);
+        $averageTitleLength = strlen($pages[0]->getTitle()) / count($pages);
+        $uniqueInternalLink = 0;
+        $uniqueExternalLink = 0;
         $links = [];
 
         foreach($pages as $page) {
             $averageLoadTime += $page->getLoadTime();
             $links = array_merge($links, $page->getLinks());
+            $uniqueExternalLink += count($page->getUniqueExternalLinks());
+            $uniqueInternalLink += count($page->getUniqueInternalLinks());
         }
-
-        array_walk($links, function ($link) use (&$uniqueInternalLink, &$uniqueExternalLink) {
-            if (!stristr($link, 'http://') && !stristr($link, 'https://')) {
-                $uniqueInternalLink[$link] ??= count($uniqueInternalLink);
-            } else {
-                $uniqueExternalLink[$link] ??= count($uniqueExternalLink);
-            }
-        });
 
         return view('results', [
             'averageLoadTime' => $averageLoadTime,
-            'numberUniqueInternalLinks' => count($uniqueInternalLink),
-            'numberUniqueExternalLinks' => count($uniqueExternalLink),
+            'averageTitleLength' => $averageTitleLength,
+            'numberUniqueInternalLinks' => $uniqueInternalLink,
+            'numberUniqueExternalLinks' => $uniqueExternalLink,
 
             'links' => implode(', ', $links),
             'numberOfLinks' => count($links),
@@ -58,5 +56,9 @@ class CrawlController extends Controller
         $pageData->fetch($url);
 
         return [$pageData];
+    }
+
+    private function getHost(string $url) {
+        return parse_url($url, PHP_URL_HOST);
     }
 }

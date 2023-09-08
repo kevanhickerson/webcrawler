@@ -9,10 +9,15 @@ class Page {
     private int $loadTime;
     private array $links;
     private string $statusCode;
+    private string $title;
+    private array $uniqueExternalLinks;
+    private array $uniqueInternalLinks;
     private string $url;
 
     public function __construct(DOMDocument $domDocument = new DOMDocument()) {
         $this->document = $domDocument;
+        $this->uniqueExternalLinks = [];
+        $this->uniqueInternalLinks = [];
     }
 
     public function fetch(string $url): bool {
@@ -29,12 +34,20 @@ class Page {
         $this->statusCode = $statusCode;
         $this->url = $url;
 
+        $this->title = $this->document->getElementsByTagName('title')->item(0)?->nodeValue;
+
         $links = $this->document->getElementsByTagName('a');
 
         foreach($links as $link) {
             $linkValue = $link?->attributes?->getNamedItem('href')?->nodeValue;
             if ($linkValue) {
                 $this->links[] = $linkValue;
+
+                if (!stristr($linkValue, 'http://') && !stristr($linkValue, 'https://')) {
+                    $this->uniqueInternalLinks[$linkValue] ??= count($this->uniqueInternalLinks);
+                } else {
+                    $this->uniqueExternalLinks[$linkValue] ??= count($this->uniqueExternalLinks);
+                }
             }
         }
 
@@ -55,6 +68,18 @@ class Page {
 
     public function getStatusCode(): string {
         return $this->statusCode;
+    }
+
+    public function getTitle(): string {
+        return $this->title;
+    }
+
+    public function getUniqueExternalLinks(): array {
+        return $this->uniqueExternalLinks;
+    }
+
+    public function getUniqueInternalLinks(): array {
+        return $this->uniqueInternalLinks;
     }
 
     public function getUrl(): string {

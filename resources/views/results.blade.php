@@ -11,7 +11,7 @@
         Number Of Pictures: {{ $numberOfPictures }}<br><br>
 
         Average Page Load: {{ $averageLoadTime }}s<br>
-        Average Title Length: Fill Me In<br>
+        Average Title Length: {{ $averageTitleLength }}<br>
         Average Word Count: Fill Me In<br>
         Number Of Pages Crawled: Fill Me In<br>
         Number Of Unique Images: Fill Me In<br>
