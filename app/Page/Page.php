@@ -48,7 +48,6 @@ class Page {
                     $this->links[] = $linkValue;
 
                     if (!$host) {
-//                         var_dump($path); die();
                         $this->uniqueInternalLinks[$linkValue] ??= count($this->uniqueInternalLinks);
                     } else {
                         $this->uniqueExternalLinks[$linkValue] ??= count($this->uniqueExternalLinks);
