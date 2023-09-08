@@ -20,14 +20,17 @@ class CrawlController extends Controller
             $pageUrl = 'http://' . $pageUrl;
         }
 
-        $pageData = new Page();
-        $pageData->fetch($pageUrl);
+        $pages = $this->fetch($pageUrl);
 
-        $averageLoadTime = $pageData->getLoadTime() / 1;
+        $averageLoadTime = $pages[0]->getLoadTime() / 1;
         $uniqueInternalLink = [];
         $uniqueExternalLink = [];
+        $links = [];
 
-        $links = $pageData->getLinks();
+        foreach($pages as $page) {
+            $averageLoadTime += $page->getLoadTime();
+            $links = array_merge($links, $page->getLinks());
+        }
 
         array_walk($links, function ($link) use (&$uniqueInternalLink, &$uniqueExternalLink) {
             if (!stristr($link, 'http://') && !stristr($link, 'https://')) {
@@ -44,9 +47,16 @@ class CrawlController extends Controller
 
             'links' => implode(', ', $links),
             'numberOfLinks' => count($links),
-            'numberOfPictures' => $pageData->getDocument()->getElementsByTagName('img')->count(),
-            'page' => $pageData->getUrl(),
-            'pageStatus' => $pageData->getStatusCode(),
+            'numberOfPictures' => $pages[0]->getDocument()->getElementsByTagName('img')->count(),
+            'page' => $pages[0]->getUrl(),
+            'pageStatus' => $pages[0]->getStatusCode(),
         ]);
+    }
+
+    private function fetch(string $url) {
+        $pageData = new Page();
+        $pageData->fetch($url);
+
+        return [$pageData];
     }
 }
