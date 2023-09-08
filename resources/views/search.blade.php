@@ -9,7 +9,7 @@
     <body>
         <form action="results">
             @csrf
-            Page: <input type="text" id="page" value="agencyanalytics.com"><br><br>
+            Page: <input type="text" id="page" name="page" value="agencyanalytics.com"><br><br>
             <input type="submit">
         </form>
     </body>

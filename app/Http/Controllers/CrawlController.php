@@ -11,7 +11,8 @@ class CrawlController extends Controller
         return view('search');
     }
 
-    public function results(): View {
-        return view('results');
+    public function results(Request $request): View {
+        $page = $request->input('page');
+        return view('results', ['page' => $page]);
     }
 }

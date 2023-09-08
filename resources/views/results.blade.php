@@ -7,6 +7,6 @@
         <title>Webcrawler</title>
     </head>
     <body>
-        Results go here!
+        Crawling {{ $page }}
     </body>
 </html>
