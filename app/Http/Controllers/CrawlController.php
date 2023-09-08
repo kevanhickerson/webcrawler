@@ -22,20 +22,24 @@ class CrawlController extends Controller
 
         $domain = $this->getHost($pageUrl);
 
-        $pages = $this->fetch($pageUrl);
+        $pages[] = $this->fetch($pageUrl);
 
-        $averageLoadTime = $pages[0]->getLoadTime() / count($pages);
-        $averageTitleLength = strlen($pages[0]->getTitle()) / count($pages);
+        $averageLoadTime = 0;
+        $averageTitleLength = 0;
         $uniqueInternalLink = 0;
         $uniqueExternalLink = 0;
         $links = [];
 
         foreach($pages as $page) {
             $averageLoadTime += $page->getLoadTime();
+            $averageTitleLength += strlen($page->getTitle());
             $links = array_merge($links, $page->getLinks());
             $uniqueExternalLink += count($page->getUniqueExternalLinks());
             $uniqueInternalLink += count($page->getUniqueInternalLinks());
         }
+
+        $averageLoadTime /= count($pages);
+        $averageTitleLength /= count($pages);
 
         return view('results', [
             'averageLoadTime' => $averageLoadTime,
@@ -55,7 +59,7 @@ class CrawlController extends Controller
         $pageData = new Page();
         $pageData->fetch($url);
 
-        return [$pageData];
+        return $pageData;
     }
 
     private function getHost(string $url) {

@@ -41,12 +41,18 @@ class Page {
         foreach($links as $link) {
             $linkValue = $link?->attributes?->getNamedItem('href')?->nodeValue;
             if ($linkValue) {
-                $this->links[] = $linkValue;
+                $host = parse_url($linkValue, PHP_URL_HOST);
+                $path = parse_url($linkValue, PHP_URL_PATH);
 
-                if (!stristr($linkValue, 'http://') && !stristr($linkValue, 'https://')) {
-                    $this->uniqueInternalLinks[$linkValue] ??= count($this->uniqueInternalLinks);
-                } else {
-                    $this->uniqueExternalLinks[$linkValue] ??= count($this->uniqueExternalLinks);
+                if ($host || $path) {
+                    $this->links[] = $linkValue;
+
+                    if (!$host) {
+//                         var_dump($path); die();
+                        $this->uniqueInternalLinks[$linkValue] ??= count($this->uniqueInternalLinks);
+                    } else {
+                        $this->uniqueExternalLinks[$linkValue] ??= count($this->uniqueExternalLinks);
+                    }
                 }
             }
         }
