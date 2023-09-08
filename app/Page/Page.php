@@ -6,7 +6,7 @@ use DOMDocument;
 
 class Page {
     private DOMDocument $document;
-    private int $loadTime;
+    private float $loadTime;    // In microseconds
     private array $links;
     private string $statusCode;
     private string $title;
@@ -24,14 +24,14 @@ class Page {
         $data = file_get_contents($url);
         $statusCode = $http_response_header[0];
 
-        $startTime = time();
+        $startTime = microtime(true);
 
         // The LIBXML_NOERROR flag is so that this doesn't throw errors on valid HTML5 elements
         if (!$this->document->loadHtml($data, LIBXML_NOERROR)) {
             return false;
         }
 
-        $this->loadTime = time() - $startTime;
+        $this->loadTime = microtime(true) - $startTime;
         $this->statusCode = $statusCode;
         $this->url = $url;
 
@@ -68,7 +68,7 @@ class Page {
         return $this->document;
     }
 
-    public function getLoadTime(): int {
+    public function getLoadTime(): float {
         return $this->loadTime;
     }
 

@@ -25,7 +25,6 @@ class CrawlController extends Controller
         $pages[] = $this->fetch($pageUrl);
 
         $linksToCrawl = $pages[0]->getUniqueInternalLinks();
-//         var_dump($linksToCrawl);die();
 
         // Crawl some of the internal urls that we've found on the first page
         for ($i = 0; $i < count($linksToCrawl); $i++) {
@@ -56,6 +55,8 @@ class CrawlController extends Controller
         }
 
         $averageLoadTime /= count($pages);
+        // Change microseconds to seconds
+        $averageLoadTime /= 1000000;
         $averageTitleLength /= count($pages);
 
         return view('results', [
