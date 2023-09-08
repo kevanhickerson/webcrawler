@@ -44,15 +44,15 @@ class CrawlController extends Controller
 
         $averageLoadTime = 0;
         $averageTitleLength = 0;
-        $uniqueInternalLink = 0;
-        $uniqueExternalLink = 0;
+        $uniqueInternalLink = [];
+        $uniqueExternalLink = [];
         $uniqueImages = [];
 
         foreach($pages as $page) {
             $averageLoadTime += $page->getLoadTime();
             $averageTitleLength += strlen($page->getTitle());
-            $uniqueExternalLink += count($page->getUniqueExternalLinks());
-            $uniqueInternalLink += count($page->getUniqueInternalLinks());
+            $uniqueExternalLink += $page->getUniqueExternalLinks();
+            $uniqueInternalLink += $page->getUniqueInternalLinks();
             $uniqueImages += $page->getUniqueImages();
         }
 
@@ -64,8 +64,8 @@ class CrawlController extends Controller
         return view('results', [
             'averageLoadTime' => $averageLoadTime,
             'averageTitleLength' => $averageTitleLength,
-            'numberUniqueInternalLinks' => $uniqueInternalLink,
-            'numberUniqueExternalLinks' => $uniqueExternalLink,
+            'numberUniqueInternalLinks' => count($uniqueInternalLink),
+            'numberUniqueExternalLinks' => count($uniqueExternalLink),
             'numberUniqueImages' => count($uniqueImages),
             'pagesCrawled' => $pages,
 
