@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CrawlController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,10 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('search');
-});
-
-Route::get('/results', function () {
-    return view('results');
+Route::controller(CrawlController::class)->group(function() {
+    Route::get('/', 'search');
+    Route::get('/results', 'results');
 });
