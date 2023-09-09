@@ -17,7 +17,7 @@ class CrawlControllerTest extends TestCase
         $response->assertSee('<input type="submit">', false);
     }
 
-    public function testResults(): void
+    public function testResultsWithNoInternalLinks(): void
     {
         Http::fake([
             '*' => Http::response('
@@ -54,7 +54,7 @@ class CrawlControllerTest extends TestCase
         $response->assertSee('Number Of Unique External Links: 2');
     }
 
-    public function testResultsWithInternalLink(): void
+    public function testResultsWithOneInternalLink(): void
     {
         Http::fake([
             'example.com' => Http::response('
