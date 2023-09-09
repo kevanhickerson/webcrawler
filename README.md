@@ -1,5 +1,5 @@
 # Webcrawler
-A small technical proof of concept for crawling a small set of pages given a URL.
+A small technical proof of concept for crawling a set of pages given a URL.
 
 ## Requirements
 You will need to have PHP and Composer installed to run this project.
@@ -15,3 +15,5 @@ When running PHP commands, preface them with `wsl`
 
 ## Commands
 `php artisan serve` - Run Development Server
+
+`php artisan test` - Run Unit/Feature Tests
