@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\App\Page\Page;
+namespace Tests\Feature\App\Page;
 
 use App\Page\Page;
 use Illuminate\Support\Facades\Http;
@@ -93,8 +93,8 @@ class PageTest extends TestCase
                     <head></head>
                     <body>
                         <a href="/internal1">I1</a>
-                                                <a href="/internal1">I1</a>
-                                                <a href="/internal2">I2</a>
+                        <a href="/internal1">I1</a>
+                        <a href="/internal2">I2</a>
                         <a href="http://example.com/external1">E1</a>
                         <a href="http://example.com/external1">E1</a>
                         <a href="http://example.com/external2">E2</a>
